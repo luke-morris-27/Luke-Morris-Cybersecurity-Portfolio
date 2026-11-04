@@ -18,7 +18,7 @@ An external system at IP address 10.77.3.10 made repeated unsuccessful SSH login
 
 The incident was initially detected by Wazuh, which generated a Medium-severity (Level 8) alert after identifying six failed SSH authentication attempts within 120 seconds. The alert triggered detection rule 100351, indicating a potential brute-force attack against the server.
 
-<div align="center"><img src="IR-000005_02-02_sc_wazuh-brute-alert.png" alt="IR-000005_02-02_sc_wazuh-brute-alert.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000005_02-02_sc_wazuh-brute-alert.png" alt="IR-000005_02-02_sc_wazuh-brute-alert.png" style="max-width:85%;height:auto"></div>
 
 The affected system was the CentOS server MyLinuxVPN (10.77.3.20), specifically its SSH service and the labssh user account. The authentication attempts originated from IP address 10.77.3.10, which was identified as the source of the suspicious activity.
 
@@ -26,9 +26,9 @@ Wazuh alerts and SSH authentication logs confirmed repeated failed login attempt
 
 The failed SSH authentication attempts were investigated using Wazuh and Splunk, then an appropiate firewall rule was implemented on the CentOS server to block SSH connections from 10.77.3.10. Subsequent testing confirmed the source could no longer establish an SSH connection, while legitimate administrative access remained available.
 
-<div align="center"><img src="IR-000005_02-06_sc_rejectrule.png" alt="IR-000005_02-06_sc_rejectrule.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000005_02-06_sc_rejectrule.png" alt="IR-000005_02-06_sc_rejectrule.png" style="max-width:85%;height:auto"></div>
 
-<div align="center"><img src="IR-000005_02-06_sc_rejected.png" alt="IR-000005_02-06_sc_rejected.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000005_02-06_sc_rejected.png" alt="IR-000005_02-06_sc_rejected.png" style="max-width:85%;height:auto"></div>
 
 It is recommended to maintain the source IP restriction, reviewing SSH authentication logs for additional suspicious activity, and implementing account lockout or rate-limiting protections. SSH key-based authentication should also be considered to reduce the risk of future password-based attacks.
 
@@ -36,7 +36,7 @@ It is recommended to maintain the source IP restriction, reviewing SSH authentic
 
 Wazuh initially detected the suspicious SSH authentication activity and generated a Medium-severity security alert. Splunk was subsequently used to investigate the authentication logs and corroborate the activity identified by Wazuh.
 
-<div align="center"><img src="IR-000005_03-01_sc_splunk-brute.png" alt="IR-000005_03-01_sc_splunk-brute.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000005_03-01_sc_splunk-brute.png" alt="IR-000005_03-01_sc_splunk-brute.png" style="max-width:85%;height:auto"></div>
 
 Wazuh generated alert 100351, titled "LAB 3 MEDIUM: SSH brute-force attack from Kali Linux," with a severity of Level 8 (Medium). The rule identifies six failed SSH authentication attempts within 120 seconds and maps the activity to MITRE ATT&CK technique T1110 (Brute Force).
 
@@ -62,7 +62,7 @@ Screenshots were collected showing the attack, alerts on Splunk and Wazuh, and a
 
 A process was executed that attempts several slightly different passwords on the labssh account.
 
-<div align="center"><img src="IR-000005_07-01_sc_bruteforce-execution.png" alt="IR-000005_07-01_sc_bruteforce-execution.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000005_07-01_sc_bruteforce-execution.png" alt="IR-000005_07-01_sc_bruteforce-execution.png" style="max-width:85%;height:auto"></div>
 
 No unauthorized file creation, modification, deletion, or file integrity violations were identified during the investigation. The observed activity involved repeated SSH authentication attempts rather than changes to files or system resources.
 
@@ -72,7 +72,7 @@ The labssh account experienced repeated failed SSH authentication attempts origi
 
 Wazuh identified the repeated SSH authentication failures and generated a Medium-severity alert, while Splunk provided authentication logs for corroborating the source IP, targeted account, and sequence of events.
 
-<div align="center"><img src="IR-000005_07-05_sc_source_ip.png" alt="IR-000005_07-05_sc_source_ip.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000005_07-05_sc_source_ip.png" alt="IR-000005_07-05_sc_source_ip.png" style="max-width:85%;height:auto"></div>
 
 ## 9. Findings and Root Cause
 
