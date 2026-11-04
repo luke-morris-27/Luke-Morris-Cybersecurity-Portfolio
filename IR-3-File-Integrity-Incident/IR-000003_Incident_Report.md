@@ -16,11 +16,11 @@ An unauthorized modification was made to a sensitive payroll file, `salaries.csv
 
 The incident was first detected via a medium alert on Wazuh.
 
-<div align="center"><img src="IR-000003_02-02_sc_Wazuh-initial-alert.png" alt="IR-000003_02-02_sc_Wazuh-initial-alert.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000003_02-02_sc_Wazuh-initial-alert.png" alt="IR-000003_02-02_sc_Wazuh-initial-alert.png" style="max-width:85%;height:auto"></div>
 
 The affected asset was `C:\IR-Lab\Sensitive\salaries.csv` on the LAB-003 Windows 11 workstation. The modification was performed under the `IRLabTester` standard user account, while Wazuh and Splunk were used to investigate the associated file-integrity and system activity.
 
-<div align="center"><img src="IR-000003_02-03_sc_Initial-attack.png" alt="IR-000003_02-03_sc_Initial-attack.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000003_02-03_sc_Initial-attack.png" alt="IR-000003_02-03_sc_Initial-attack.png" style="max-width:85%;height:auto"></div>
 
 The modified payroll contents, changed SHA256 hash, and Wazuh FIM alert provide evidence that the file's integrity was compromised. Although the modification was associated with the `IRLabTester` account during the investigation, the available FIM evidence alone does not establish the user's intent or independently prove who initiated the change.
 
@@ -34,7 +34,7 @@ It is recommended to review the affected account's access permissions, examining
 
 The activity was detected on Wazuh and Splunk.
 
-<div align="center"><img src="IR-000003_03-01_sc_Wazuh-FIM-alert.png" alt="IR-000003_03-01_sc_Wazuh-FIM-alert.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000003_03-01_sc_Wazuh-FIM-alert.png" alt="IR-000003_03-01_sc_Wazuh-FIM-alert.png" style="max-width:85%;height:auto"></div>
 
 The alert signature was Wazuh FIM Rule 550, which identifies modifications to monitored files.
 
@@ -80,9 +80,9 @@ Wazuh provided the primary file-integrity detection, while Splunk was used to in
 
 The affected file was C:\IR-Lab\Sensitive\salaries.csv on the LAB-003 Windows 11 endpoint, with activity associated with the IRLabTester account. SHA256 hash comparisons confirmed that the payroll file was modified and subsequently restored to its authorized contents. The primary indicator was the unauthorized salary increase from $72,000 to $172,000; no malicious IP addresses, domains, or network-based indicators were established during the investigation.
 
-<div align="center"><img src="IR-000003_07-06_sc_Initial-hash-showcase.png" alt="IR-000003_07-06_sc_Initial-hash-showcase.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000003_07-06_sc_Initial-hash-showcase.png" alt="IR-000003_07-06_sc_Initial-hash-showcase.png" style="max-width:85%;height:auto"></div>
 
-<div align="center"><img src="IR-000003_07-06_sc_Hash-restore.png" alt="IR-000003_07-06_sc_Hash-restore.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000003_07-06_sc_Hash-restore.png" alt="IR-000003_07-06_sc_Hash-restore.png" style="max-width:85%;height:auto"></div>
 
 ## 9. Findings and Root Cause
 
@@ -98,13 +98,13 @@ The activity was contained by closing the PowerShell session associated with the
 
 Remediation affected the LAB-003 Windows 11 endpoint, the IRLabTester account's permissions, and the sensitive payroll file at C:\IR-Lab\Sensitive\salaries.csv. The associated PowerShell session was closed, the modified salary information was restored, and write access was restricted for the affected account. No network connections or additional hosts required remediation.
 
-<div align="center"><img src="IR-000003_10-03_sc_Wazuh-restoration.png" alt="IR-000003_10-03_sc_Wazuh-restoration.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000003_10-03_sc_Wazuh-restoration.png" alt="IR-000003_10-03_sc_Wazuh-restoration.png" style="max-width:85%;height:auto"></div>
 
 The NTFS access-control configuration of salaries.csv was modified by applying an explicit Deny Write permission to the IRLabTester account. Wazuh File Integrity Monitoring was configured to monitor the sensitive payroll directory, with a dedicated Level 8 detection rule for salary-file modifications. No password changes, software patches, or firewall modifications were performed as part of remediation.
 
-<div align="center"><img src="IR-000003_10-04_sc_Permission-change.png" alt="IR-000003_10-04_sc_Permission-change.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000003_10-04_sc_Permission-change.png" alt="IR-000003_10-04_sc_Permission-change.png" style="max-width:85%;height:auto"></div>
 
-<div align="center"><img src="IR-000003_10-04_sc_Access-denied.png" alt="IR-000003_10-04_sc_Access-denied.png" style="max-width:85%;height:auto"></div>
+<div align="center"><img src="images/IR-000003_10-04_sc_Access-denied.png" alt="IR-000003_10-04_sc_Access-denied.png" style="max-width:85%;height:auto"></div>
 
 Successful remediation has been verified by confirming that the payroll file contained the original authorized salary values and that its SHA256 hash matched the recorded baseline. Modification attempt was repeated using IRLabTester, who received an access-denied error, confirming that the NTFS restriction prevented the account from modifying the file. Wazuh FIM evidence also documented the restoration of the monitored file.
 
