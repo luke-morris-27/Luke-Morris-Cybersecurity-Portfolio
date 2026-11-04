@@ -2,7 +2,7 @@
 
 **Case:** #5 - [SOC] IR-04 - Brute Force Attack  
 **Client:**   
-**Status:** Open  
+**Status:** Closed  
 
 ## 1. Case Identification
 
